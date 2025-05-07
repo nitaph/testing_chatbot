@@ -21,7 +21,8 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.session_id = str(uuid.uuid4())
 
-st.title("🧠 Continue the Conversation")
+st.title("🧠 ‘Imagine a world where humans have just made contact with extraterrestrial beings. The first meeting happens in a small town, and the townspeople are unsure how to react. Describe the emotions, interactions, and events that unfold during this historic encounter.’
+Please interact with the AI as needed and feel free to use the suggestions or request further assistance at any point in the process")
 
 # --- Display previous chat ---
 for msg in st.session_state.messages:
