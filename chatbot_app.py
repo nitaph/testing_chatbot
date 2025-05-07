@@ -5,13 +5,13 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import uuid
 
-# --- Set up API keys ---
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+# --- Set up API keys from Streamlit Secrets ---
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])  # Use secret for OpenAI API key
 
-# --- Google Sheets setup ---
+# --- Google Sheets setup using service account credentials from Streamlit Secrets ---
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(
-    st.secrets["gcp_service_account"], scope
+    st.secrets["gcp_service_account"], scope  # Use secret for GCP credentials
 )
 client_gspread = gspread.authorize(creds)
 sheet = client_gspread.open("ChatbotConversations").worksheet("conversations")  # Sheet must exist!
