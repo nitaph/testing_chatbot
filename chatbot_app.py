@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as sthttps://github.com/nitaph/testing_chatbot/blob/main/chatbot_app.py
 import openai
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -39,15 +39,15 @@ if prompt:
     # Create conversation history
     conversation_history = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
 
-    # Get assistant response using OpenAI API (corrected API call)
-    response = openai.Completion.create(
+    # Get assistant response using OpenAI API (updated API call)
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # or "gpt-4" if you have access
-        prompt=conversation_history,  # Use the conversation history for the chat
+        messages=conversation_history,  # Use the conversation history for the chat
         max_tokens=150  # Adjust this based on your needs
     )
 
     # Get the assistant's reply
-    reply = response['choices'][0]['text'].strip()
+    reply = response['choices'][0]['message']['content'].strip()
     st.session_state.messages.append({"role": "assistant", "content": reply})
 
     with st.chat_message("assistant"):
