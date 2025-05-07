@@ -1,4 +1,4 @@
-import streamlit as sthttps://github.com/nitaph/testing_chatbot/blob/main/chatbot_app.py
+import streamlit as st
 import openai
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -21,7 +21,11 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.session_id = str(uuid.uuid4())
 
-st.title("🧠 Imagine a world where humans have just made contact with extraterrestrial beings. The first meeting happens in a small town, and the townspeople are unsure how to react. Describe the emotions, interactions, and events that unfold during this historic encounter.")
+# Define the title for the task
+task_title = "🧠 Imagine a world where humans have just made contact with extraterrestrial beings. The first meeting happens in a small town, and the townspeople are unsure how to react. Describe the emotions, interactions, and events that unfold during this historic encounter."
+
+# Display the task title on the UI
+st.title(task_title)
 
 # --- Display previous chat ---
 for msg in st.session_state.messages:
@@ -36,13 +40,13 @@ if prompt:
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Create conversation history
-    conversation_history = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
+    # Add the task title as context at the beginning of the conversation history
+    conversation_history = [{"role": "system", "content": task_title}] + [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
 
-    # Get assistant response using OpenAI API (updated API call)
+    # Get assistant response using OpenAI API
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # or "gpt-4" if you have access
-        messages=conversation_history,  # Use the conversation history for the chat
+        messages=conversation_history,  # Use the conversation history with the title
         max_tokens=150  # Adjust this based on your needs
     )
 
