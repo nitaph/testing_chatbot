@@ -39,14 +39,14 @@ if prompt:
     # Create conversation history
     conversation_history = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
 
-    # Get assistant response using OpenAI API
-    response = openai.ChatCompletion.create(
+    # Get assistant response using OpenAI API (updated to new API)
+    response = openai.Chat.create(
         model="gpt-3.5-turbo",  # or "gpt-4" if you have access
         messages=conversation_history,  # Use the conversation history for the chat
         max_tokens=25  # Adjust this based on your needs
     )
 
-    reply = response.choices[0].message["content"].strip()  # Get the assistant's reply
+    reply = response["choices"][0]["message"]["content"].strip()  # Updated response structure
     st.session_state.messages.append({"role": "assistant", "content": reply})
 
     with st.chat_message("assistant"):
@@ -59,8 +59,4 @@ if prompt:
                 datetime.utcnow().isoformat(),
                 st.session_state.session_id,
                 msg["role"],
-                msg["content"]
-            ])
-        st.success("✅ Conversation saved to Google Sheets!")
-    except Exception as e:
-        st.error(f"⚠️ Error saving to Google Sheets: {e}")
+                msg["]()
