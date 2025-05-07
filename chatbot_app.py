@@ -59,4 +59,8 @@ if prompt:
                 datetime.utcnow().isoformat(),
                 st.session_state.session_id,
                 msg["role"],
-                msg["]()
+                msg["content"]
+            ])
+        st.success("✅ Conversation saved to Google Sheets!")
+    except Exception as e:
+        st.error(f"⚠️ Error saving to Google Sheets: {e}")
