@@ -21,7 +21,9 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.session_id = str(uuid.uuid4())
 
-st.title("🧠 Imagine a world where humans have just made contact with extraterrestrial beings. The first meeting happens in a small town, and the townspeople are unsure how to react. Describe the emotions, interactions, and events that unfold during this historic encounter.")
+# Title that will provide context
+title = "🧠 Imagine a world where humans have just made contact with extraterrestrial beings. The first meeting happens in a small town, and the townspeople are unsure how to react. Describe the emotions, interactions, and events that unfold during this historic encounter."
+st.title(title)
 
 # --- Display previous chat ---
 for msg in st.session_state.messages:
@@ -36,14 +38,14 @@ if prompt:
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Create conversation history
-    conversation_history = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
+    # Create conversation history and include the title as context
+    conversation_history = [{"role": "system", "content": title}] + [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
 
     # Get assistant response using OpenAI API (updated API call)
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # or "gpt-4" if you have access
         messages=conversation_history,  # Use the conversation history for the chat
-        max_tokens=150  # Adjust this based on your needs
+        max_tokens=20  # Adjust this based on your needs
     )
 
     # Get the assistant's reply
@@ -62,6 +64,5 @@ if prompt:
                 msg["role"],
                 msg["content"]
             ])
-        st.success("✅ Conversation saved to Google Sheets!")
     except Exception as e:
-        st.error(f"⚠️ Error saving to Google Sheets: {e}")
+        st.error(f"⚠️ Error : {e}")
